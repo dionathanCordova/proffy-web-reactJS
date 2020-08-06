@@ -7,9 +7,11 @@ import './styles.css';
 
 interface Propriedades {
     title: string;
+    description?: string;
 }
 
 const PageHeader: React.FC<Propriedades> = (props) => {
+    
     return (
         <header className="page-header">
             <div className="top-bar-container">
@@ -21,6 +23,7 @@ const PageHeader: React.FC<Propriedades> = (props) => {
 
             <div className="header-content">
                 <strong>{props.title}</strong>
+                {props.description && <p>{props.description}</p>}
 
                 {props.children}
             </div>

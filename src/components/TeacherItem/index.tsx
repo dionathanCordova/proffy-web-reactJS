@@ -3,34 +3,55 @@ import React from 'react';
 import whatsappIcon from '../../assets/images/icons/whatsapp.svg';
 
 import './styles.css';
+import api from '../../service/api';
 
-function TeacherItem() {
+export interface Teacher {
+    id: number;
+    avatar: string;
+    bio: string;
+    cost: number;
+    name: string;
+    subject: string;
+    whatsapp: string;
+};
+
+interface TeacherResponse {
+    teacherData: Teacher
+}
+
+const TeacherItem: React.FC<TeacherResponse> = ({teacherData})  => {
+    const formatWhatsapp = teacherData.whatsapp.replace(/ /g,'');
+
+    function createConnection() {
+        api.post('connection', {
+            user_id: teacherData.id
+        })
+    }
+
     return (
         <article className="teacher-item">
             <header>
-                <img src="https://avatars3.githubusercontent.com/u/17915601?s=460&u=96ecb2b2408d0785ccdf6d1a364c60ef54b59ae5&v=4" alt=""/>
+                <img src={teacherData.avatar} alt={teacherData.name}/>
                 <div>
-                    <strong>Dionathen Córdova</strong>
-                    <span>Química</span>
+                    <strong>{teacherData.name}</strong>
+                    <span>{teacherData.subject}</span>
                 </div>
             </header>
 
             <p>
-                Bla blablas loren ipsum, teste de descriçao. 
-                <br/><br/>
-                Bla blablas loren ipsum, teste de descriçaoBla blablas loren ipsum, teste de descriçao. 
+                {teacherData.bio}
             </p>
 
             <footer>
                 <p>
                     Preço/hora
-                    <strong>R$ 20,00</strong>
+                    <strong>R$ {teacherData.cost}</strong>
                 </p>
 
-                <button type="button">
+                <a href={`https://wa.me/${formatWhatsapp}`} target="_blank">
                     <img src={whatsappIcon} alt="whatsapp"/>
                     Entrar em contato
-                </button>
+                </a>
             </footer>
         </article>
     )
